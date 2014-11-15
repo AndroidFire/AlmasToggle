@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+ <ListPreference android:title="Policy of Almas Toggle" android:summary="Switch Toggle Between Horizontal Toggle and Grid Toggle" android:entryValues="@array/toggle_policy" android:entries="@array/toggle_policy" android:key="pol"/>
+ <ListPreference android:entries="@array/colum_num" android:entryValues="@array/colum_num" android:summary="Customize GridView Column" android:title="Change Column Number" android:key="toggle_col" /><Preference android:title="Extended Toggle" android:summary="Extend Your Toggle">   
+        <intent android:targetPackage="com.almas.toggles" android:action="android.intent.action.MAIN" android:targetClass="com.almas.widget.ExtendsToggleView" />
+    </Preference>
+
+ 
+ 
+ <CheckBoxPreference android:title="Hide on Change" android:key="toggleg" android:summary="When Any Toggle will change it will collapase statusbar"/>
+ 
+ 
+    
+
+
+</PreferenceScreen>

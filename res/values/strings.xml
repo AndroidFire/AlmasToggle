@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Almas Toggles</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+        <color name="btn">#00000000</color>
+    <color name="btn_selected">#c00099bc</color>     
+</resources>

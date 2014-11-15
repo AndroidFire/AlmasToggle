@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/stat_sys_battery_0" android:maxLevel="9" />
+    <item android:drawable="@drawable/stat_sys_battery_10" android:maxLevel="16" />
+    <item android:drawable="@drawable/stat_sys_battery_20" android:maxLevel="22" />
+    <item android:drawable="@drawable/stat_sys_battery_30" android:maxLevel="28" />
+    <item android:drawable="@drawable/stat_sys_battery_40" android:maxLevel="34" />
+    <item android:drawable="@drawable/stat_sys_battery_50" android:maxLevel="40" />
+    <item android:drawable="@drawable/stat_sys_battery_60" android:maxLevel="46" />
+    <item android:drawable="@drawable/stat_sys_battery_70" android:maxLevel="52" />
+    <item android:drawable="@drawable/stat_sys_battery_80" android:maxLevel="58" />
+    <item android:drawable="@drawable/stat_sys_battery_90" android:maxLevel="64" />
+    <item android:drawable="@drawable/stat_sys_battery_100" android:maxLevel="70" />
+    <item android:drawable="@drawable/stat_sys_battery_110" android:maxLevel="76" />
+    <item android:drawable="@drawable/stat_sys_battery_120" android:maxLevel="82" />
+    <item android:drawable="@drawable/stat_sys_battery_130" android:maxLevel="88" />
+    <item android:drawable="@drawable/stat_sys_battery_140" android:maxLevel="94" />
+    <item android:drawable="@drawable/stat_sys_battery_150" android:maxLevel="100" />
+</level-list>
