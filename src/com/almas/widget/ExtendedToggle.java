@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class ExtendedToggle extends LinearLayout {
 	private ListView lv;
-	private String[] Name = new String[] {"Profile","Wifi","Bt","Data","Gps","AutoRoation","Setting","Battery","Airplane","Sound","Sleep","Previous","PlayPause","Next",
+	private String[] Name = new String[] {"Profile","Wifi","Bt","Data","Gps","AutoRotate","Setting","Battery","Airplane","Sound","Sleep","Previous","PlayPause","Next",
 			"Lockscreen","Screenshot","FlashLight","ScreenTimeout","Brightness","Sync","Eatter","ClearRam","AlmasConroller"};
 	public ExtendedToggle(final Context context, AttributeSet attrs) {
 		super(context, attrs);

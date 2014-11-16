@@ -19,15 +19,25 @@ public class ToggleHorizontalView extends HorizontalScrollView {
     int isHorizonView;
 	public ToggleHorizontalView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
+		
 		context.registerReceiver(RemoveToggle, new IntentFilter("com.almas.UPDATE"));
+		context.registerReceiver(Policy, new IntentFilter("com.almas._POLICY_UPDATE"));
+		My_Cluster = Settings.System.getString(context.getContentResolver(), "AlmasCluster");
 		My_Layout = new LinearLayout(context);
 		addView(My_Layout);
-		if (My_Cluster == null ) {
-			My_Cluster = Default_Cluster;
-		}
-		else {
-			Default_Cluster = My_Cluster;
-		}
+		 if (My_Cluster == null) {
+			 Default_Cluster = Helper.def_clus;
+		 }
+		 else if (My_Cluster == "" ){
+			 Default_Cluster = Helper.def_clus;
+		 }
+		 else if (My_Cluster != null ) {
+			 Default_Cluster = My_Cluster;
+		 }
+		 else if (My_Cluster != "") {
+			 Default_Cluster = My_Cluster; 
+		 }
 		
 		isHorizonView = Settings.System.getInt(context.getContentResolver(),"AlmasTogglePolicy", 0);
 		boolean isNeutral = Settings.System.getInt(context.getContentResolver(), "isToggleisNeutral" ,0 ) ==1 ;
@@ -37,7 +47,7 @@ public class ToggleHorizontalView extends HorizontalScrollView {
 		}
 	       Def_Clus = Default_Cluster.split(" ");
 			for (int i = 0 ; i < Def_Clus.length ; i++ ) {
-				addToggle(Def_Clus[i]);
+				addToggle(Def_Clus[i], My_Layout);
 			}
 			if (isHorizonView == 0) {
 				setVisibility(View.VISIBLE);
@@ -46,31 +56,46 @@ public class ToggleHorizontalView extends HorizontalScrollView {
 					setVisibility(View.GONE);
 				}
 				
-			}
+			
 
-	
-      BroadcastReceiver RemoveToggle = new BroadcastReceiver() {
+	}
+	BroadcastReceiver Policy = new BroadcastReceiver() {
 
-	@Override
-	public void onReceive(Context context, Intent i) {
-		isHorizonView = Settings.System.getInt(context.getContentResolver(),"AlmasTogglePolicy", 0);
-		if (isHorizonView == 0) {
-			setVisibility(View.VISIBLE);
-			}
-			else {
-				setVisibility(View.GONE);
-			}
-		invalidate();
-		removeAllViewsInLayout();
-		My_Layout = new LinearLayout(context);
-		addView(My_Layout);
-		for (int ih = 0 ; ih < Def_Clus.length ; ih++ ) {
-			addToggle(Def_Clus[ih]);
-		}
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			isHorizonView = Settings.System.getInt(arg0.getContentResolver(),"AlmasTogglePolicy", 0);
+			if (isHorizonView == 0) {
+				setVisibility(View.VISIBLE);
+				}
+				else {
+					setVisibility(View.GONE);
+				}
+			
 		}
 
-    };
-	private void addToggle(String s) {
+		
+		};
+	BroadcastReceiver RemoveToggle = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent i) {
+			removeAllViewsInLayout();
+			LinearLayout My_Layoutb = new LinearLayout(context);
+			addView(My_Layoutb);
+			
+			String My_Clusterr = Settings.System.getString(context.getContentResolver(), "AlmasCluster");
+			String[] ss;
+			ss = My_Clusterr.split(" ");
+			for (int ib = 0 ; ib < ss.length ; ib++ ) {
+				addToggle(ss[ib], My_Layoutb);
+			}
+			
+			invalidate();
+		
+		  }
+	};
+
+	private void addToggle(String s,LinearLayout My_Layout) {
 		int b = Settings.System.getInt(getContext().getContentResolver(), s ,0);
 		if(b == 0) {
 			if (s.equalsIgnoreCase("wifi")) {
@@ -157,8 +182,8 @@ public class ToggleHorizontalView extends HorizontalScrollView {
 				FlashLight fl = new FlashLight(getContext());
 				My_Layout.addView(fl);
 			}
-			else if (s.equalsIgnoreCase("reboot")) {
-				Reboot rb = new Reboot(getContext());
+			else if (s.equalsIgnoreCase("wifiapp")) {
+				WifiApp rb = new WifiApp(getContext());
 				My_Layout.addView(rb);
 			}
 			else if (s.equalsIgnoreCase("lockscreen")) {
@@ -168,9 +193,8 @@ public class ToggleHorizontalView extends HorizontalScrollView {
 			else if (s.equalsIgnoreCase("almasconroller")) {
 				Conroller ac = new Conroller(getContext());
 				My_Layout.addView(ac);
-			}
+			}	
 		}
-		
 	}
-
+		
 }

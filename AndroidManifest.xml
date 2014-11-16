@@ -51,7 +51,8 @@
         </activity>
            <activity
             android:name="com.almas.widget.Settings" 
-            android:label="ToggleSettings">
+            android:label="ToggleSettings"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
              <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
@@ -75,7 +76,14 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
            </activity>
           <activity
-            android:name="com.almas.widget.ExtendsToggleView" >
+            android:name="com.almas.widget.ExtendsToggleView" 
+             android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+           </activity>
+           <activity
+            android:name="com.almas.widget.ToggleOrder" 
+             android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+             <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.DEFAULT"/>
            </activity>
     </application>
 

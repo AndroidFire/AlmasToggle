@@ -1,11 +1,11 @@
 package com.almas.widget;
 
-import com.almas.toggles.R;
-
-import android.app.Activity;
 import android.os.Bundle;
 
-public class ExtendsToggleView extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.almas.toggles.R;
+
+public class ExtendsToggleView extends SherlockActivity {
 	 
 	@Override
 	protected void onCreate(Bundle v) {

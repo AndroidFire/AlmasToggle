@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.almas.toggles.R;
 @SuppressWarnings("deprecation")
-public class Settings extends PreferenceActivity {
+public class Settings extends SherlockPreferenceActivity {
 	CheckBoxPreference HideonChange;
 	ListPreference policy;
 	ListPreference num;
@@ -44,14 +44,14 @@ public class Settings extends PreferenceActivity {
 				if (Vis.equalsIgnoreCase("GridView")) {
 					android.provider.Settings.System.putInt(getContentResolver(), "AlmasTogglePolicy",1);
 					Intent i =  new Intent();
-					i.setAction("com.almas.UPDATE");
+					i.setAction("com.almas._POLICY_UPDATE");
 					sendBroadcast(i);
 					num.setEnabled(true);
 				}
 				else {
 					android.provider.Settings.System.putInt(getContentResolver(), "AlmasTogglePolicy",0);
 					Intent i =  new Intent();
-					i.setAction("com.almas.UPDATE");
+					i.setAction("com.almas._POLICY_UPDATE");
 					sendBroadcast(i);
 					num.setEnabled(false);
 				}
@@ -76,11 +76,15 @@ public class Settings extends PreferenceActivity {
 
 		if (HideonChange.isChecked()) {
 			android.provider.Settings.System.putInt(getContentResolver(), "AlmasToggleHC",1);
-			 
+			Intent i =  new Intent();
+			i.setAction("com.almas.HIDE_ON_CHANGE");
+			sendBroadcast(i);
 		}
 		else {
 			android.provider.Settings.System.putInt(getContentResolver(), "AlmasToggleHC",0);
-			
+			Intent i =  new Intent();
+			i.setAction("com.almas.HIDE_ON_CHANGE");
+			sendBroadcast(i);
 		}
 	}
 }

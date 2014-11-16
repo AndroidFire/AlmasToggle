@@ -47,7 +47,7 @@ public class Rotage extends TogglePower {
 	@Override
 	public void onTogglerObserver() {
 		TogglesObserver tg = new TogglesObserver();
-		tg.observe(getContext(), getRootView(), tgRo);
+		tg.observe(getContext(), getRootView(), "AutoRotate");
 	}
 
 	@Override

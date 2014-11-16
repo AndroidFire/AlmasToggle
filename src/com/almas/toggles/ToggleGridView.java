@@ -12,23 +12,32 @@ import android.view.View;
 import android.widget.GridView;
 
 public class ToggleGridView extends GridView {
-	String Default_Cluster = Helper.def_clus;
+	String Default_Cluster;
 	String[] Def_Clus;
 	String My_Cluster;
 	private boolean isGridView;
 	int mColumn;
+	GridViewAdapter mAdapter;
 	ArrayList<TogglePower> toggles = new ArrayList<TogglePower>();
 	public ToggleGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		context.registerReceiver(RemoveToggle, new IntentFilter("com.almas.UPDATE"));
 		context.registerReceiver(Column, new IntentFilter("com.almas.UPDATE_GRIDVIEW"));
-		if (My_Cluster == null ) {
-			My_Cluster = Default_Cluster;
-		}
-		else {
-			Default_Cluster = My_Cluster;
-		}
+		context.registerReceiver(Policy, new IntentFilter("com.almas._POLICY_UPDATE"));
+		My_Cluster = Settings.System.getString(context.getContentResolver(), "AlmasCluster");
 		
+		 if (My_Cluster == null) {
+			 Default_Cluster = Helper.def_clus;
+		 }
+		 else if (My_Cluster == "" ){
+			 Default_Cluster = Helper.def_clus;
+		 }
+		 else if (My_Cluster != null ) {
+			 Default_Cluster = My_Cluster;
+		 }
+		 else if (My_Cluster != "") {
+			 Default_Cluster = My_Cluster; 
+		 }
 		isGridView = Settings.System.getInt(context.getContentResolver(),"AlmasTogglePolicy", 0 ) == 1;
 		boolean isNeutral = Settings.System.getInt(context.getContentResolver(), "isToggleisNeutral" ,0 ) ==1 ;
 		mColumn = Settings.System.getInt(context.getContentResolver(), "AlmasColumn", 4);
@@ -43,12 +52,12 @@ public class ToggleGridView extends GridView {
 		if (isNeutral) {
 			setVisibility(View.GONE);
 		}
-		GridViewAdapter mAdapter = new GridViewAdapter(context, toggles);
+		 mAdapter = new GridViewAdapter(context, toggles);
 		setAdapter(mAdapter);
 		
 	       Def_Clus = Default_Cluster.split(" ");
 			for (int i = 0 ; i < Def_Clus.length ; i++ ) {
-				addToggle(Def_Clus[i]);
+				addToggle(Def_Clus[i], toggles);
 			}
 
 		if (isGridView) {
@@ -59,14 +68,12 @@ public class ToggleGridView extends GridView {
 		}
 		
 	}
-	BroadcastReceiver RemoveToggle = new BroadcastReceiver() {
+	
+	BroadcastReceiver Policy = new BroadcastReceiver() {
 
 		@Override
-		public void onReceive(Context context, Intent i) {
-			GridViewAdapter mAdapter = new GridViewAdapter(context, toggles);
-			setAdapter(mAdapter);
-			isGridView = Settings.System.getInt(context.getContentResolver(),"AlmasTogglePolicy", 0 ) == 1;
-			invalidate();
+		public void onReceive(Context arg0, Intent arg1) {
+			isGridView = Settings.System.getInt(arg0.getContentResolver(),"AlmasTogglePolicy", 0 ) == 1;
 			if (isGridView) {
 				setVisibility(View.VISIBLE);
 				}
@@ -74,7 +81,29 @@ public class ToggleGridView extends GridView {
 					setVisibility(View.GONE);
 				}
 		}
+		
+		};
+	BroadcastReceiver RemoveToggle = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent i) {
+			
+			 String[] ss;
+			String My_Clusterr = Settings.System.getString(context.getContentResolver(), "AlmasCluster");
+			 ArrayList<TogglePower> toggle= new ArrayList<TogglePower>();
+			 toggles.clear();
+
+
+			 ss = My_Clusterr.split(" ");
+			 GridViewAdapter mAdapterr = new GridViewAdapter(context, toggle);
+			 setAdapter(mAdapterr);
+			 for (int ib = 0 ; ib < ss.length ; ib++ ) {
+					addToggle(ss[ib], toggle);
+				}
+		}
 	};
+	
+	
 	BroadcastReceiver Column = new BroadcastReceiver() {
 
 		@Override
@@ -87,105 +116,105 @@ public class ToggleGridView extends GridView {
 	};
 	
 	
-	private void addToggle(final String s) {
+	private void addToggle(final String s,ArrayList<TogglePower> a) {
 				
 				int b = Settings.System.getInt(getContext().getContentResolver(), s ,0);
 				if(b == 0) {
 					if (s.equalsIgnoreCase("wifi")) {
 						WIFI w = new WIFI(getContext());
-						toggles.add(w);
+						a.add(w);
 					}
 					else if (s.equalsIgnoreCase("bt")) {
 						BT by = new BT(getContext());
-						toggles.add(by);
+						a.add(by);
 					}
 					else if (s.equalsIgnoreCase("gps")) {
 						GPS gps = new GPS(getContext());
-						toggles.add(gps);
+						a.add(gps);
 					}
 					else if (s.equalsIgnoreCase("data")) {
 						DATA d = new DATA(getContext());
-						toggles.add(d);
+						a.add(d);
 					}
 					else if (s.equalsIgnoreCase("sound")) {
 						Sound so = new Sound(getContext());
-						toggles.add(so);
+						a.add(so);
 					}
-					else if (s.equalsIgnoreCase("autoroation")) {
+					else if (s.equalsIgnoreCase("AutoRotate")) {
 						Rotage r = new Rotage(getContext());
-						toggles.add(r);
+						a.add(r);
 					}
 					else if (s.equalsIgnoreCase("sleep")) {
 						Sleep sp = new Sleep(getContext());
-						toggles.add(sp);
+						a.add(sp);
 					}
 					else if (s.equalsIgnoreCase("airplane")) {
 						Airplane air = new Airplane(getContext());
-						toggles.add(air);
+						a.add(air);
 					}
 					else if (s.equalsIgnoreCase("profile")) {
 						Profile pro = new Profile(getContext());
-						toggles.add(pro);
+						a.add(pro);
 					}
 					else if (s.equalsIgnoreCase("previous")) {
 						Prev prev = new Prev(getContext());
-						toggles.add(prev);
+						a.add(prev);
 					}
 					else if (s.equalsIgnoreCase("playpause")) {
 						PlayPause play = new PlayPause(getContext());
-						toggles.add(play);
+						a.add(play);
 					}
 					else if (s.equalsIgnoreCase("next")) {
 						Next next = new Next(getContext());
-						toggles.add(next);
+						a.add(next);
 					}
 					else if (s.equalsIgnoreCase("settings")) {
 						com.almas.toggles.Settings set = new com.almas.toggles.Settings(getContext());
-						toggles.add(set);
+						a.add(set);
 					}
 					else if (s.equalsIgnoreCase("clearram")) {
 						ClearRam cr = new ClearRam(getContext());
-						toggles.add(cr);
+						a.add(cr);
 					}
 					else if (s.equalsIgnoreCase("brightness")) {
 						Brightness by = new Brightness(getContext());
-						toggles.add(by);
+						a.add(by);
 					}
 					else if (s.equalsIgnoreCase("eatter")) {
 						Eatter ate = new Eatter(getContext()); 
-						toggles.add(ate);
+						a.add(ate);
 					}
 					else if (s.equalsIgnoreCase("battery")) {
 						Battery bat = new Battery(getContext());
-						toggles.add(bat);
+						a.add(bat);
 					}
 					else if (s.equalsIgnoreCase("sync")) {
 						Sync sy = new Sync(getContext());
-						toggles.add(sy);
+						a.add(sy);
 					}
 					else if (s.equalsIgnoreCase("screentimeout")) {
 						ScreenTimeout st =new ScreenTimeout(getContext());
-						toggles.add(st);
+						a.add(st);
 					}
 					else if (s.equalsIgnoreCase("screenshot")) {
 						Screenshot ss = new Screenshot(getContext());
-						toggles.add(ss);
+						a.add(ss);
 					}
 					else if (s.equalsIgnoreCase("flashlight")) {
 						FlashLight fl = new FlashLight(getContext());
-						toggles.add(fl);
+						a.add(fl);
 					}
-					else if (s.equalsIgnoreCase("reboot")) {
-						Reboot rb = new Reboot(getContext());
-						toggles.add(rb);
+					else if (s.equalsIgnoreCase("wifiapp")) {
+						WifiApp rb = new WifiApp(getContext());
+						a.add(rb);
 					}
 					else if (s.equalsIgnoreCase("lockscreen")) {
 						Lockscreen ls = new Lockscreen(getContext());
-						toggles.add(ls);
+						a.add(ls);
 					}
 					else if (s.equalsIgnoreCase("almasconroller")) {
 						Conroller ac = new Conroller(getContext());
-						toggles.add(ac);
+						a.add(ac);
 					}
 				}
 	}

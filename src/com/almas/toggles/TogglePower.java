@@ -57,6 +57,7 @@ public abstract class TogglePower extends LinearLayout {
 		mSettingsObserver = new SettingsObserver();
 		hideonchange = android.provider.Settings.System.getInt(context.getContentResolver(), "AlmasToggleHC",0);
 		context.registerReceiver(ToggleSmiler, new IntentFilter("com.almas.EXTANDING"));
+		context.registerReceiver(HideonChange, new IntentFilter("com.almas.HIDE_ON_CHANGE"));
 		int j = Toggle.length;
 		am = new AlmasMaster(context);
 		for (int i = 0; i < j ; i++) {
@@ -125,6 +126,7 @@ public abstract class TogglePower extends LinearLayout {
 			@Override
 			public boolean onLongClick(View arg0) {
 				onToggleLongClick();
+				
 				 if (hideonchange == 1 ) {
 		    		  try{ 
 				    	   Object service  = context.getSystemService("statusbar");
@@ -151,6 +153,62 @@ public abstract class TogglePower extends LinearLayout {
 		@Override
 		public void onReceive(Context context, Intent i) {
 				onTogglerObserver();
+				 
+		}
+	};
+	BroadcastReceiver HideonChange = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(final Context context, Intent i) {
+			mTG.setOnLongClickListener(new View.OnLongClickListener() {
+				int  b  = android.provider.Settings.System.getInt(context.getContentResolver(), "AlmasToggleHC",0);
+				@Override
+				public boolean onLongClick(View arg0) {
+					onToggleLongClick();
+					hideonchange = b;
+					 if (hideonchange == 1 ) {
+			    		  try{ 
+					    	   Object service  = context.getSystemService("statusbar");
+					    	   Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+					    	   Method collapse = statusbarManager.getMethod("collapse");
+					    	   collapse.invoke(service);
+					    	 }
+					    	 catch(Exception ex){           
+
+					    	 }  
+			    	  }
+			    	  else {
+			    		  
+			    	  }
+					
+				
+					return true;
+				}
+			});
+				mTG.setOnClickListener(new View.OnClickListener() {
+					int  b  = android.provider.Settings.System.getInt(context.getContentResolver(), "AlmasToggleHC",0);
+					@Override
+					public void onClick(View arg0) {
+						onToggleClick();
+						hideonchange = b;
+						 if (hideonchange == 1 ) {
+				    		  try{ 
+						    	   Object service  = context.getSystemService("statusbar");
+						    	   Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+						    	   Method collapse = statusbarManager.getMethod("collapse");
+						    	   collapse.invoke(service);
+						    	 }
+						    	 catch(Exception ex){           
+
+						    	 }  
+				    	  }
+				    	  else {
+				    		  
+				    	  }
+						
+					}
+				});
+				
 		}
 	};
 	public abstract void onToggleClick();
